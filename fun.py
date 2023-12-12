@@ -54,6 +54,7 @@ Yes. The main function should invoke your function, so I can execute your code a
 def zen():
     with open('zen.txt') as file_object:
         lines = file_object.readlines()
+        print(lines)
 
     sayings = []
     new_lines = []
@@ -64,11 +65,18 @@ def zen():
             sayings.append(line)
         sayings.sort()
 
-    index = 0
-    while index < len(sayings):
-        sayings[index] = str(index + 1) + ". " + sayings[index]
-        index += 1
-    new_lines += sayings
+    # enumerate使うやり方
+    for index, value in enumerate(sayings, 1):
+        new_lines.append(str(index) + ". " + value)
+
+    # enumerate使わないやり方
+    # index = 0
+    # while index < len(sayings):
+    #     sayings[index] = str(index + 1) + ". " + sayings[index]
+    #     index += 1
+    # new_lines += sayings
+
+    print(new_lines)
     new_text = ''.join(new_lines)
 
     with open('zen_copy.txt', 'w') as new_file:
