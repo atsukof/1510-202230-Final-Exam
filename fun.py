@@ -49,3 +49,35 @@ _______________________________________
 Yes. The main function should invoke your function, so I can execute your code and examine zen_copy.txt
 
 """
+
+
+def zen():
+    with open('zen.txt') as file_object:
+        lines = file_object.readlines()
+
+    sayings = []
+    new_lines = []
+    for line in lines:
+        if (line[-2:]) != ".\n":
+            new_lines.append(line)
+        else:
+            sayings.append(line)
+        sayings.sort()
+
+    index = 0
+    while index < len(sayings):
+        sayings[index] = str(index + 1) + ". " + sayings[index]
+        index += 1
+    new_lines += sayings
+    new_text = ''.join(new_lines)
+
+    with open('zen_copy.txt', 'w') as new_file:
+        new_file.write(new_text)
+
+
+def main():
+    zen()
+
+
+if __name__ == "__main__":
+    main()
