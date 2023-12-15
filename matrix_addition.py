@@ -159,45 +159,42 @@ def add_matrices(first, second):
     [[1, 2, 1], [8, 10, 3]]
 
     """
-    if type(first) != list or type(second) != list:
-        raise ValueError
-    else:
-        try:
-            first_column_length = len(first[0])
-            for index in range(len(first)):
-                f_check = len(first[index]) == first_column_length
-                if not f_check:
-                    raise ValueError
-            second_column_length = len(second[0])
-            for index in range(len(second)):
-                s_check = len(second[index]) == second_column_length
-                if not s_check:
-                    raise ValueError
-        except ValueError:
-            print("Wrong value.")
-        else:
-            try:
-                if first_column_length != second_column_length:
-                    raise ValueError
-                if len(first) != len(second):
-                    raise ValueError
-            except ValueError:
-                print("Different size of matrices. Cannot calculate sum!")
-            else:
-                try:
-                    result = [
-                        [first[row][column] + second[row][column] for column in range(len(first[0]))]
-                        for row in range(len(first))]
-                except TypeError:
-                    print("Cannot calculate non number values")
-                else:
-                    return result
+    # check if both are list of lists
+    if not all(isinstance(row, list) for row in first) or not all(isinstance(row, list) for row in second):
+        raise ValueError("The lists must only contain lists.")
+
+    # check if each list of first and second only contains integers
+    if not all(all(isinstance(element, int) for element in row) for row in first) or \
+            not all(all(isinstance(element, int) for element in row) for row in second):
+        raise ValueError("Lists contained in first and second only contain integers.")
+
+    first_column_length = len(first[0])
+    for index in range(len(first)):
+        f_check = len(first[index]) == first_column_length
+        if not f_check:
+            raise ValueError("Wrong size of list.")
+
+    second_column_length = len(second[0])
+    for index in range(len(second)):
+        s_check = len(second[index]) == second_column_length
+        if not s_check:
+            raise ValueError("Wrong size of list.")
+
+    if first_column_length != second_column_length or len(first) != len(second):
+        raise ValueError("Different size of matrices. Cannot calculate sum!")
+
+    result = [first[row][column] + second[row][column] for column in range(len(first[0])) for row in range(len(first))]
+
+    return result
 
 
 def main():
-    first_matrix = [[1, 2], [3, 4]]
+    first_matrix = [[1, 1], [3, 4]]
     second_matrix = [[5, 6], [7, 8]]
-    print(add_matrices(first_matrix, second_matrix))
+    try:
+        add_matrices(first_matrix, second_matrix)
+    except ValueError as error_message:
+        print(error_message)
 
 
 if __name__ == "__main__":
