@@ -28,13 +28,32 @@
 
 def backup(file_name):
     """
+    Create a backup file with .bak extension.
 
-    :param file_name:
+    :param file_name: a string of a file name
+    :precondition: a file with file_name must exist.
     :return:
     """
+    try:
+        with open(file_name) as file_object:
+            all_text = file_object.read()
+    except FileNotFoundError:
+        print("File does not exist.")
+    else:
+        if file_name[-4:] == ".txt":
+            new_file_name = file_name[:-4] + ".bak"
+        else:
+            new_file_name = file_name
+
+        with open(new_file_name, 'w') as another_object:
+            another_object.write(all_text)
+
+        print(f"generated {new_file_name}.")
+
 
 def main():
-    pass
+    backup("test.txt")
+    backup("test2.txt")
 
 
 if __name__ == "__main__":
