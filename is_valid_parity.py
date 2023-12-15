@@ -40,8 +40,32 @@
            is_valid_parity("11111111111000011111000001010110101", "ODD") returns False
 """
 
+
+def is_valid_parity(codeword, parity):
+    """
+    Check if the codeword has been correctly parity-encoded.
+
+    :param codeword: a string composed of "0" and "1"
+    :param parity:  a string of "EVEN" or "ODD"
+    :return: True or False
+    """
+    total_number_of_1 = 0
+
+    for digit in codeword:
+        total_number_of_1 += int(digit)
+
+    if total_number_of_1 % 2 == 0:
+        check = parity == "EVEN"
+    else:
+        check = parity == "ODD"
+
+    return check
+
+
 def main():
-    pass
+    print(is_valid_parity("101", "EVEN"))
+    print(is_valid_parity("1111111111000011111000001010110101", "ODD"))
+    # True
 
 
 if __name__ == "__main__":
