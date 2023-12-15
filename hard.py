@@ -6,9 +6,7 @@ _________
 Define a function called denomination_registrar.
 
 This function accepts a non-empty sorted tuple of ints and floats called denominations.
-
 This function uses this sorted tuple when it customizes and returns an inner function called change_maker.
-
 The change_maker function is used to make change rounded to the closest 20th of a unit. It does this
 using the algorithm you implemented for money_changer in A2. Yes, you may use code you wrote for A2 here.
 
@@ -67,3 +65,57 @@ _______________________________________
 Yes. The main function should contain the code in the examples to demo your code.
 
 """
+
+
+def denomination_registrar(denominations):
+    """
+
+    :param denominations:
+    :return:
+    """
+
+    denominations = list(denominations)
+
+    def change_maker(amount):
+        amount_in_cents = int(amount * 100)
+
+        if str(amount_in_cents)[-1] in ['0', '1', '2']:
+            amount_in_cents -= int(str(amount_in_cents)[-1])
+        elif str(amount_in_cents)[-1] in ['3', '4', '5', '6', '7']:
+            amount_in_cents = int(str(amount_in_cents)[:-1] + '5')
+        else:
+            amount_in_cents = int(str(amount_in_cents)[:-2] + str(int(str(amount_in_cents)[-2]) + 1) + '0')
+
+        index = 0
+        for number in denominations:
+            denominations[index] = int(number * 100)
+            index += 1
+
+        number_of_bills = []
+
+        for bill_value in denominations:
+            number_of_bill = amount_in_cents // bill_value
+            amount_in_cents = amount_in_cents % bill_value
+            number_of_bills += [number_of_bill]
+
+        return number_of_bills
+
+    return change_maker
+
+
+def main():
+    canadian_denominations = (100, 50, 20, 10, 5, 2, 1, 0.25, 0.10, 0.05)
+    canadian_change_maker = denomination_registrar(canadian_denominations)
+    canadian_breakdown = canadian_change_maker(66.53)
+    print(canadian_breakdown)
+    # [0, 1, 0, 1, 1, 0, 1, 2, 0, 1]  # expected output
+
+    euro_denominations = (500, 200, 100, 50, 20, 10, 5, 2, 1, .50, .20, .10, .05)
+    euro_change_maker = denomination_registrar(euro_denominations)
+    euro_breakdown = euro_change_maker(870.53)
+    print(euro_breakdown)
+    # [1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1] # expected output
+
+
+if __name__ == "__main__":
+    main()
